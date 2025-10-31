@@ -332,7 +332,7 @@
     const REDEEM_LINK = document.getElementById('redeemLink');
 
     if (REDEEM_LINK && TOKEN) {
-      REDEEM_LINK.href = `https://t.me/timereginamargheritachannel_bot?redeem=${TOKEN}`;
+		REDEEM_LINK.href = `tg://resolve?domain=timereginamargheritachannel_bot&start=${TOKEN}`;
     }
   })();
 
@@ -526,9 +526,9 @@ setTimeout(() => {
         }
       });
 
-      BACK_BTN?.addEventListener('click', () => {
+      /*BACK_BTN?.addEventListener('click', () => {
         window.location.href = "https://t.me/timereginamargheritachannel_bot?redeem=${TOKEN}"; // o la tua homepage
-      });
+      });*/
     }})();
   </script>
 </body>
