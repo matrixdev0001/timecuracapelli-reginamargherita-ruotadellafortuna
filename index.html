@@ -225,10 +225,23 @@
 </h1>
     <p id="finalPrize" style="font-size:1.4rem; font-weight:700; color:#00334e; margin:1.5rem 0;"></p>
     <p style="color:#555; margin-bottom:1.5rem;">Mostra in salone il codice QR che ti abbiamo inviato su Telegram!</p>
-    <button id="backBtn" style="
-      background:#735354; color:white; border:none; padding:0.9rem 1.5rem;
-      border-radius:50px; font-weight:600; cursor:pointer;
-    ">Riscatta il tuo premio!</button>
+  <!-- ✅ Link sostituisce il bottone -->
+  <a id="redeemLink" href="#"
+     style="
+        display:inline-block;
+        background:#735354;
+        color:white;
+        text-decoration:none;
+        border:none;
+        padding:0.9rem 1.5rem;
+        border-radius:50px;
+        font-weight:600;
+        cursor:pointer;
+        text-align:center;
+        margin-bottom:1rem;
+     ">
+    Riscatta il tuo premio!
+  </a>
     <p class="small-muted">© Time Cura Capelli – Roma, Viale Regina Margherita, 308</p>
 
 	<!-- Sezione contatti con i tuoi loghi SVG -->
@@ -299,6 +312,17 @@
 </div>
   </div>
   <script>
+
+	// Aggiorna dinamicamente il link del premio con il token
+  (function() {
+    const URL_PARAMS = new URLSearchParams(window.location.search);
+    const TOKEN = URL_PARAMS.get('token');
+    const REDEEM_LINK = document.getElementById('redeemLink');
+
+    if (REDEEM_LINK && TOKEN) {
+      REDEEM_LINK.href = `https://t.me/timereginamargheritachannel_bot?redeem=${TOKEN}`;
+    }
+  })();
 
 function showFireworksMulti() {
   const container = document.getElementById('fireworksContainer');
