@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ruota della Fortuna – Time Cura Capelli</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #f8fafc;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 1.5rem;
+      color: #555;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+      padding: 2rem;
+      width: 100%;
+      max-width: 620px;
+      text-align: center;
+      animation: fadeInUp 0.7s ease;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+      display: block;
+      margin: 0 auto 1.5rem;
+      max-width: 140px;
+      height: auto;
+    }
+
+    h1 {
+      color: #735354;
+      font-weight: 700;
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+    }
+
+    .intro {
+      color: #555;
+      font-size: 0.95rem;
+      margin-bottom: 1.8rem;
+      line-height: 1.5;
+    }
+
+    .wheel-wrapper {
+      position: relative;
+      width: 640px;
+      height: 640px;
+      margin: 0 auto 2rem;
+    }
+
+.wheel-center-logo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.wheel-center-logo img {
+  width: 90px;
+  height: 90px;
+  background: #ffffff;
+  border-radius: 50%;
+  object-fit: cover;      /* ← fondamentale! */
+  display: block;
+}
+
+    .wheel-svg {
+      width: 100%;
+      height: 100%;
+      transform-origin: center;
+      transition: transform 6s cubic-bezier(0.16, 0.84, 0.4, 1);
+    }
+
+/* Fuochi d'artificio */
+.fireworks {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 20;
+  overflow: hidden;
+}
+
+.firework {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0;
+  animation: explode 1s ease-out forwards;
+}
+
+@keyframes explode {
+  0% { transform: scale(0); opacity: 1; }
+  50% { transform: scale(2.5); opacity: 1; }
+  100% { transform: scale(0); opacity: 0; }
+}
+
+
+    .pointer {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+    }
+
+    button#spinBtn {
+      background: #735354;
+      color: white;
+      font-size: 1.15rem;
+      font-weight: 600;
+      padding: 1rem 1.2rem;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      width: 100%;
+      max-width: 280px;
+      margin: 0 auto;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(115, 83, 84, 0.3);
+    }
+
+    button#spinBtn:hover:not(:disabled) {
+      background: #5e4344;
+      transform: translateY(-3px);
+      box-shadow: 0 6px 16px rgba(115, 83, 84, 0.4);
+    }
+
+    button#spinBtn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Stile per la pagina del risultato */
+    .result-page {
+      display: none;
+      animation: fadeIn 0.8s ease;
+    }
+
+    .error-page {
+      display: none;
+      animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .small-muted {
+      font-size: 0.85rem;
+      color: #999;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 600px) {
+      .wheel-wrapper {
+        width: 320px;
+        height: 320px;
+      }
+      h1 { font-size: 1.4rem; }
+      .card { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Pagina iniziale: ruota -->
+  <div class="card" id="wheelPage">
+    <img src="images/logo_time.svg" alt="Logo Time Cura Capelli" class="logo" />
+    <h1>✨ Gira la Ruota & Vinci!</h1>
+    <p class="intro">Ogni cliente merita un premio. Scopri subito cosa hai vinto oggi!</p>
+
+<div class="wheel-wrapper">
+  <svg class="pointer" width="40" height="32" viewBox="0 0 40 32">
+    <path d="M20 32 L0 0 L40 0 Z" fill="#735354" />
+  </svg>
+  <svg class="wheel-svg" id="wheel" viewBox="-20 -20 240 240"></svg>
+  
+  <!-- ✅ Logo al centro della ruota -->
+  <div class="wheel-center-logo">
+    <img src="images/logo_time.svg" alt="Time Cura Capelli">
+  </div>
+</div>
+
+    <button id="spinBtn" disabled>Gira la Ruota</button>
+    <p class="small-muted">© Time Cura Capelli – Roma, Viale Regina Margherita, 308</p>
+  </div>
+
+  <!-- Pagina risultato: solo premio -->
+  <div class="card result-page" id="resultPage" style="display:none;">
+  <!-- Contenitore fuochi -->
+    <img src="images/logo_time.svg" alt="Logo Time Cura Capelli" class="logo" />
+	<h1 style="position: relative; z-index: 2;">🎉 Congratulazioni!
+ <div id="fireworksContainer" style="
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;    /* larghezza area fuochi */
+    height: 80px;    /* altezza area fuochi */
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    overflow: visible;
+  "></div>
+</h1>
+    <p id="finalPrize" style="font-size:1.4rem; font-weight:700; color:#00334e; margin:1.5rem 0;"></p>
+    <p style="color:#555; margin-bottom:1.5rem;">Mostra in salone il codice QR che ti abbiamo inviato su Telegram!</p>
+    <button id="backBtn" style="
+      background:#735354; color:white; border:none; padding:0.9rem 1.5rem;
+      border-radius:50px; font-weight:600; cursor:pointer;
+    ">Visita il nostro salone</button>
+    <p class="small-muted">© Time Cura Capelli – Roma, Viale Regina Margherita, 308</p>
+
+	<!-- Sezione contatti con i tuoi loghi SVG -->
+<div style="margin: 2rem auto; max-width: 280px;">
+  <p style="color:#735354; font-weight:600; margin-bottom:1rem; font-size:0.95rem;">
+    Contattaci o seguici!
+  </p>
+  <div style="display:flex; justify-content:space-around; gap:18px;">
+    <!-- WhatsApp -->
+    <a href="https://wa.me/tuonumero" target="_blank" aria-label="WhatsApp">
+      <img src="images/whatsapp_logo.svg" alt="WhatsApp" width="32" height="32" style="display:block; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    </a>
+
+    <!-- Telegram -->
+    <a href="https://t.me/tuocanale" target="_blank" aria-label="Telegram">
+      <img src="images/telegram_logo.svg" alt="Telegram" width="32" height="32" style="display:block; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    </a>
+
+    <!-- Instagram -->
+    <a href="https://instagram.com/tuoaccount" target="_blank" aria-label="Instagram">
+      <img src="images/instagram_logo.svg" alt="Instagram" width="32" height="32" style="display:block; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    </a>
+    <a href="https://facebook.com/tuoaccount" target="_blank" aria-label="Facebook">
+      <img src="images/facebook_logo.svg" alt="Instagram" width="32" height="32" style="display:block; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    </a>
+
+  </div>
+</div>
+  </div>
+
+  <!-- Pagina risultato: solo premio -->
+  <div class="card error-page" id="errorPage" style="display:none;">
+  <!-- Contenitore fuochi -->
+    <img src="images/logo_time.svg" alt="Logo Time Cura Capelli" class="logo" />
+	<h1 style="position: relative; z-index: 2;"> Accedi da Telegram per giocare con noi.</h1>
+    <button id="backBtn" style="
+      background:#735354; color:white; border:none; padding:0.9rem 1.5rem;
+      border-radius:50px; font-weight:600; cursor:pointer;
+    ">Visita il nostro salone</button>
+    <p class="small-muted">© Time Cura Capelli – Roma, Viale Regina Margherita, 308</p>
+
+	<!-- Sezione contatti con i tuoi loghi SVG -->
+<div style="margin: 2rem auto; max-width: 280px;">
+  <p style="color:#735354; font-weight:600; margin-bottom:1rem; font-size:0.95rem;">
+    Contattaci o seguici!
+  </p>
+  <div style="display:flex; justify-content:space-around; gap:18px;">
+    <!-- WhatsApp -->
+    <a href="https://wa.me/tuonumero" target="_blank" aria-label="WhatsApp">
+      <img src="images/whatsapp_logo.svg" alt="WhatsApp" width="32" height="32" style="display:block; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    </a>
+
+    <!-- Telegram -->
+    <a href="https://t.me/tuocanale" target="_blank" aria-label="Telegram">
+      <img src="images/telegram_logo.svg" alt="Telegram" width="32" height="32" style="display:block; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    </a>
+
+    <!-- Instagram -->
+    <a href="https://instagram.com/tuoaccount" target="_blank" aria-label="Instagram">
+      <img src="images/instagram_logo.svg" alt="Instagram" width="32" height="32" style="display:block; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    </a>
+    <a href="https://facebook.com/tuoaccount" target="_blank" aria-label="Facebook">
+      <img src="images/facebook_logo.svg" alt="Instagram" width="32" height="32" style="display:block; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
+    </a>
+
+  </div>
+</div>
+  </div>
+  <script>
+
+function showFireworksMulti() {
+  const container = document.getElementById('fireworksContainer');
+  const colors = ['#ffd700', '#ff3f34', '#34ff8f', '#3385ff', '#ff34d4'];
+  const fireworkCount = 4; // 4 fuochi contemporanei
+
+  for (let f = 0; f < fireworkCount; f++) {
+    const offsetX = (Math.random() - 0.5) * 200; // spostamento orizzontale
+    const offsetY = (Math.random() - 0.5) * 40;  // spostamento verticale
+
+    for (let i = 0; i < 20; i++) { // particelle per fuoco
+      const particle = document.createElement('div');
+      particle.style.position = 'absolute';
+      particle.style.width = '8px';
+      particle.style.height = '8px';
+      particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+      particle.style.borderRadius = '50%';
+      particle.style.left = `calc(50% + ${offsetX}px)`;
+      particle.style.top = `calc(50% + ${offsetY}px)`;
+      particle.style.opacity = 1;
+
+      const angle = Math.random() * 2 * Math.PI;
+      const distance = 60 + Math.random() * 60;
+      const duration = 600 + Math.random() * 400;
+
+      particle.animate([
+        { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 },
+        { transform: `translate(calc(-50% + ${Math.cos(angle)*distance}px), calc(-50% + ${Math.sin(angle)*distance}px)) scale(0.3)`, opacity: 0 }
+      ], {
+        duration: duration,
+        easing: 'ease-out',
+        fill: 'forwards'
+      });
+
+      container.appendChild(particle);
+
+      setTimeout(() => container.removeChild(particle), duration);
+    }
+  }
+}
+
+
+    (function () {
+      const PRIZES = [
+        "Piega gratis!",
+        "Sconto 15% se porti un amico",
+        "Sconto 20% se porti due amici",
+        "Sconto 10%",
+        "Trattamento capelli in omaggio",
+        "Sconto 20% se porti tre amici",
+        "Taglio + piega a -15%",
+        "Prodotto in omaggio"
+      ];
+
+      const COLORS = [
+        '#d4a800', '#735354', '#00334e', '#b98f00',
+        '#d4a800', '#735354', '#00334e', '#b98f00'
+      ];
+
+      const WHEEL = document.getElementById('wheel');
+      const SEGMENTS = PRIZES.length;
+      const ANGLE = 360 / SEGMENTS;
+
+      // Disegna la ruota (solo spicchi colorati, niente testo/icona)
+      for (let i = 0; i < SEGMENTS; i++) {
+        const startAngle = i * ANGLE - 90;
+        const endAngle = (i + 1) * ANGLE - 90;
+
+        const x1 = 100 + 98 * Math.cos((startAngle * Math.PI) / 180);
+        const y1 = 100 + 98 * Math.sin((startAngle * Math.PI) / 180);
+        const x2 = 100 + 98 * Math.cos((endAngle * Math.PI) / 180);
+        const y2 = 100 + 98 * Math.sin((endAngle * Math.PI) / 180);
+
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', `M100,100 L${x1},${y1} A98,98 0 ${ANGLE > 180 ? 1 : 0},1 ${x2},${y2} Z`);
+        path.setAttribute('fill', COLORS[i]);
+        path.setAttribute('stroke', '#fff');
+        path.setAttribute('stroke-width', '2');
+        WHEEL.appendChild(path);
+      }
+
+	  // ✅ Aggiungi un logo SOPRA ogni spicchio (non sui bordi, ma centrato su ogni fetta)
+	const LOGO_PATH = "images/logo_time.svg"; // ← unico punto di configurazione
+	const rLogo = 110; // fuori dal bordo della ruota (raggio esterno = 98)
+
+		for (let i = 0; i < SEGMENTS; i++) {
+		  // Angolo al CENTRO dello spicchio
+		  const midAngleDeg = i * ANGLE + ANGLE / 2 - 90;
+		  const midAngleRad = (midAngleDeg * Math.PI) / 180;
+
+		  // Coordinate esterne
+		  const x = 100 + rLogo * Math.cos(midAngleRad);
+		  const y = 100 + rLogo * Math.sin(midAngleRad);
+
+		  // Crea l'immagine SVG
+		  const logoImg = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+		  logoImg.setAttribute('href', LOGO_PATH);
+		  logoImg.setAttribute('x', x - 14); // 28x28 → metà = 14
+		  logoImg.setAttribute('y', y - 14);
+		  logoImg.setAttribute('width', '28');
+		  logoImg.setAttribute('height', '28');
+		  WHEEL.appendChild(logoImg);
+		}
+
+      // --- Logica principale ---
+      const URL_PARAMS = new URLSearchParams(window.location.search);
+      const TOKEN = URL_PARAMS.get('token');
+      const SPIN_BTN = document.getElementById('spinBtn');
+      const WHEEL_PAGE = document.getElementById('wheelPage');
+      const RESULT_PAGE = document.getElementById('resultPage');
+      const ERROR_PAGE = document.getElementById('errorPage');
+      const FINAL_PRIZE = document.getElementById('finalPrize');
+      const BACK_BTN = document.getElementById('backBtn');
+
+      if (!TOKEN) {
+  		WHEEL_PAGE.style.display = 'none';
+  		RESULT_PAGE.style.display = 'none';
+  		ERROR_PAGE.style.display = 'block';
+      }
+	else
+	  {
+
+
+      SPIN_BTN.disabled = false;
+
+      // Simula il worker in locale (solo per test)
+      async function simulatePrize() {
+        return new Promise(resolve => {
+          setTimeout(() => {
+            const randomPrize = PRIZES[Math.floor(Math.random() * PRIZES.length)];
+            resolve({ prize: randomPrize });
+          }, 1000); // simula latenza
+        });
+      }
+
+      // URL del tuo Cloudflare Worker (da sostituire)
+      const WORKER_URL = 'https://ruota-timecuracapelli.your-subdomain.workers.dev';
+
+      SPIN_BTN.addEventListener('click', async () => {
+        SPIN_BTN.disabled = true;
+
+        // Rotazione velocissima: 8-12 giri
+        const extraRot = 360 * (8 + Math.random() * 4);
+        WHEEL.style.transform = `rotate(${-extraRot}deg)`;
+
+        // Attendi la fine dell'animazione
+        await new Promise(resolve => setTimeout(resolve, 5000));
+
+        // Chiama il backend (o simula in locale)
+        let result;
+        try {
+          // Prova a chiamare il worker
+          const res = await fetch(WORKER_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token: TOKEN })
+          });
+
+          if (res.ok) {
+            result = await res.json();
+          } else {
+            throw new Error('Worker non risponde');
+          }
+        } catch (err) {
+          console.warn('Worker non disponibile: uso simulazione locale');
+		   // await new Promise(resolve => setTimeout(resolve, 1000));
+          result = await simulatePrize(); // fallback per sviluppo
+        }
+
+        // Mostra solo il premio
+	if (result && result.prize) {
+  FINAL_PRIZE.textContent = result.prize;
+  WHEEL_PAGE.style.display = 'none';
+  RESULT_PAGE.style.display = 'block';
+setTimeout(() => {
+  showFireworksMulti();
+}, 300);
+setTimeout(() => {
+  showFireworksMulti();
+}, 1300);
+setTimeout(() => {
+  showFireworksMulti();
+}, 2300);
+}
+
+
+         else {
+          alert("Errore: premio non disponibile.");
+        }
+      });
+
+      BACK_BTN?.addEventListener('click', () => {
+        window.location.href = 'https://www.timecuracapelli.it/dove-siamo/roma-viale-regina-margherita/'; // o la tua homepage
+      });
+    }})();
+  </script>
+</body>
+</html>
