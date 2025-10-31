@@ -226,7 +226,7 @@
     <p id="finalPrize" style="font-size:1.4rem; font-weight:700; color:#00334e; margin:1.5rem 0;"></p>
     <p style="color:#555; margin-bottom:1.5rem;">Mostra in salone il codice QR che ti abbiamo inviato su Telegram!</p>
   <!-- ✅ Link sostituisce il bottone -->
-  <a id="redeemLink" href="#"
+  <a id="redeemLink" href="https://t.me/timereginamargheritachannel_bot?start=redeem"
      style="
         display:inline-block;
         background:#735354;
@@ -278,7 +278,7 @@
   <!-- Contenitore fuochi -->
     <img src="images/logo_time.svg" alt="Logo Time Cura Capelli" class="logo" />
 	<h1 style="position: relative; z-index: 2;"> Accedi da Telegram per giocare con noi.</h1>
-  <a id="redeemLink" href="#"
+  <a id="redeemLink" href="https://t.me/timereginamargheritachannel_bot?start=redeem"
      style="
         display:inline-block;
         background:#735354;
@@ -326,15 +326,15 @@
   <script>
 
 	// Aggiorna dinamicamente il link del premio con il token
-  (function() {
-    const URL_PARAMS = new URLSearchParams(window.location.search);
-    const TOKEN = URL_PARAMS.get('token');
-    const REDEEM_LINK = document.getElementById('redeemLink');
+  // (function() {
+  //   const URL_PARAMS = new URLSearchParams(window.location.search);
+  //   const TOKEN = URL_PARAMS.get('token');
+  //   const REDEEM_LINK = document.getElementById('redeemLink');
 
-    if (REDEEM_LINK && TOKEN) {
-		REDEEM_LINK.href = `https://t.me/timereginamargheritachannel_bot?start=redeem_${TOKEN}`;
-    }
-  })();
+  //   if (REDEEM_LINK && TOKEN) {
+		// REDEEM_LINK.href = `https://t.me/timereginamargheritachannel_bot?start=redeem_${TOKEN}`;
+  //   }
+  // })();
 
 function showFireworksMulti() {
   const container = document.getElementById('fireworksContainer');
