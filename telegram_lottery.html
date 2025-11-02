@@ -129,12 +129,12 @@ const FINAL_PRIZE=document.getElementById('finalPrize');
 const CLOSE_BTN=document.getElementById('closeBtn');
 
 //if (!tg || !token) {
-if (!tg || !token) {
+if (!token) {
   		WHEEL_PAGE.style.display = 'none';
   		RESULT_PAGE.style.display = 'none';
   		ERROR_PAGE.style.display = 'block';
 } else { 
-tg.ready();
+//tg.ready();
 WHEEL_PAGE.style.display = 'block';
 RESULT_PAGE.style.display = 'none';
 ERROR_PAGE.style.display = 'none';
