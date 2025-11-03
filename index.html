@@ -306,20 +306,15 @@
     const token = params.get('token');
     const link = document.getElementById('redeemLink');
 
-	alert("Token " + token);
+	//alert("Token " + token);
 
     if (link && token) {
       link.addEventListener('click', function(e) {
         e.preventDefault();
-        if (window.Telegram && Telegram.WebApp) {
-	  	  alert("Creo https://t.me/timereginamargheritachannel_bot?start=redeem" + token);
-          Telegram.WebApp.openTelegramLink("https://t.me/timereginamargheritachannel_bot?start=redeem${token}");
-        } else {
           // fallback se aperto da browser normale
 	  	  alert("Creo2 https://t.me/timereginamargheritachannel_bot?start=redeem" + token);
           //window.location.href = 'https://t.me/timereginamargheritachannel_bot?start=redeem'+ token;
-          window.location.href = 'https://t.me/timereginamargheritachannel_bot?start=redeemAAAAAAAAAAAAAAAAAAAAAAAAAAADDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADDAADDA';
-        }
+          window.location.href = 'https://t.me/timereginamargheritachannel_bot?start=redeem';
       });
     }
   })();
