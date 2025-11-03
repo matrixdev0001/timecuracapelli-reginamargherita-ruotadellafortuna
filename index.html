@@ -302,7 +302,12 @@
   <script>
 
   document.addEventListener("DOMContentLoaded", () => {
-    const inTelegram = typeof window.Telegram !== "undefined" && !!window.Telegram.WebApp;
+  if (window.Telegram && Telegram.WebApp) {
+	inTelegram = true
+  } else {
+	inTelegram = false
+  }
+});
     console.log("Sei dentro Telegram WebApp?", inTelegram);
     alert("Sei dentro Telegram WebApp? " + inTelegram);
   });
