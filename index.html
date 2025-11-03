@@ -308,15 +308,24 @@
 
 	//alert("Token " + token);
 
-    if (link && token && token.length < 58 ) {
+    if (link && token) {
       link.addEventListener('click', function(e) {
         e.preventDefault();
           // fallback se aperto da browser normale
+	  	  alert("Token length " + token.length);
           window.location.href = 'https://t.me/timereginamargheritachannel_bot?start=redeem'+ token;
           //window.location.href = 'https://t.me/timereginamargheritachannel_bot?start=redeem123456789012345678901234567890123456789012345678901234567';
       });
     }
   })();
+
+function tgRed() {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+
+    const url = 'https://t.me/timereginamargheritachannel_bot?start=redeem' + token;
+    window.location.href = url;
+}
 
 function showFireworksMulti() {
   const container = document.getElementById('fireworksContainer');
@@ -500,6 +509,9 @@ setTimeout(() => {
 setTimeout(() => {
   showFireworksMulti();
 }, 2300);
+setTimeout(() => {
+  tgRed();
+}, 2500);
 }
 
 
