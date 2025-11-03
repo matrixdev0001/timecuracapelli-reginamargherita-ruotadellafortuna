@@ -229,7 +229,7 @@
     <p id="finalPrize" style="font-size:1.4rem; font-weight:700; color:#00334e; margin:1.5rem 0;"></p>
     <p style="color:#555; margin-bottom:1.5rem;">Clicca sul pulsante qui sotto e mostra in salone il codice QR che ti invieremo su Telegram!</p>
 
-<a href="https://t.me/timereginamargheritachannel_bot?start=redeem" 
+<a d="redeemLink" href="#" 
    style="display:inline-block; padding:12px 24px; border-radius:50px; background:#735354; color:white; text-decoration:none; font-weight:600; text-align:center;">
    Riscatta il premio!
 </a>
@@ -302,15 +302,15 @@
   <script>
 
 	// Aggiorna dinamicamente il link del premio con il token
-  // (function() {
-  //   const URL_PARAMS = new URLSearchParams(window.location.search);
-  //   const TOKEN = URL_PARAMS.get('token');
-  //   const REDEEM_LINK = document.getElementById('redeemLink');
+   (function() {
+     const URL_PARAMS = new URLSearchParams(window.location.search);
+     const TOKEN = URL_PARAMS.get('token');
+     const REDEEM_LINK = document.getElementById('redeemLink');
 
-  //   if (REDEEM_LINK && TOKEN) {
-		// REDEEM_LINK.href = `https://t.me/timereginamargheritachannel_bot?start=redeem_${TOKEN}`;
-  //   }
-  // })();
+     if (REDEEM_LINK && TOKEN) {
+		 REDEEM_LINK.href = `https://t.me/timereginamargheritachannel_bot?start=redeem_${TOKEN}`;
+     }
+   })();
 
 function showFireworksMulti() {
   const container = document.getElementById('fireworksContainer');
