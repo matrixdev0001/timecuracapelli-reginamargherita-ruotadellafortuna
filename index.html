@@ -301,19 +301,13 @@
   </div>
   <script>
 
-  document.addEventListener("DOMContentLoaded", () => {
-  if (window.Telegram && Telegram.WebApp) {
-	inTelegram = true
-  } else {
-	inTelegram = false
-  }
-    alert("Sei dentro Telegram WebApp? " + inTelegram);
-});
 	// Aggiorna dinamicamente il link del premio con il token
   (function() {
     const params = new URLSearchParams(window.location.search);
     const token = params.get('token');
     const link = document.getElementById('redeemLink');
+
+	alert("Token " + token);
 
     if (link && token) {
 	  alert("1");
