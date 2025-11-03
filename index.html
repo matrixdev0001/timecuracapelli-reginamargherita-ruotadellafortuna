@@ -302,15 +302,23 @@
   <script>
 
 	// Aggiorna dinamicamente il link del premio con il token
-   (function() {
-     const URL_PARAMS = new URLSearchParams(window.location.search);
-     const TOKEN = URL_PARAMS.get('token');
-     const REDEEM_LINK = document.getElementById('redeemLink');
+  (function() {
+    const params = new URLSearchParams(window.location.search);
+    const token = params.get('token');
+    const link = document.getElementById('redeemLink');
 
-     if (REDEEM_LINK && TOKEN) {
-		 REDEEM_LINK.href = `https://t.me/timereginamargheritachannel_bot?start=redeem_${TOKEN}`;
-     }
-   })();
+    if (link && token) {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (window.Telegram && Telegram.WebApp) {
+          Telegram.WebApp.openTelegramLink(`https://t.me/timereginamargheritachannel_bot?start=redeem_${token}`);
+        } else {
+          // fallback se aperto da browser normale
+          window.location.href = `https://t.me/timereginamargheritachannel_bot?start=redeem_${token}`;
+        }
+      });
+    }
+  })();
 
 function showFireworksMulti() {
   const container = document.getElementById('fireworksContainer');
