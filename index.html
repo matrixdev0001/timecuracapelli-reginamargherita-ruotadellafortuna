@@ -452,7 +452,7 @@ function showFireworksMulti() {
       SPIN_BTN.disabled = false;
 
       // Simula il worker in locale (solo per test)
-      async function simulatePrize() {
+      async function myPrize() {
         return new Promise(resolve => {
           setTimeout(() => {
             const randomPrize = PRIZES[Math.floor(Math.random() * PRIZES.length)];
@@ -476,24 +476,7 @@ function showFireworksMulti() {
 
         // Chiama il backend (o simula in locale)
         let result;
-        try {
-          // Prova a chiamare il worker
-          const res = await fetch(WORKER_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ token: TOKEN })
-          });
-
-          if (res.ok) {
-            result = await res.json();
-          } else {
-            throw new Error('Worker non risponde');
-          }
-        } catch (err) {
-          console.warn('Worker non disponibile: uso simulazione locale');
-		   // await new Promise(resolve => setTimeout(resolve, 1000));
-          result = await simulatePrize(); // fallback per sviluppo
-        }
+       result = await myPrize(); // fallback per sviluppo
 
         // Mostra solo il premio
 	if (result && result.prize) {
