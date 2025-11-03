@@ -316,13 +316,16 @@
     const link = document.getElementById('redeemLink');
 
     if (link && token) {
+	  alert("1");
       link.addEventListener('click', function(e) {
         e.preventDefault();
         if (window.Telegram && Telegram.WebApp) {
+	  	  alert("Creo https://t.me/timereginamargheritachannel_bot?start=redeem" + token);
           Telegram.WebApp.openTelegramLink(`https://t.me/timereginamargheritachannel_bot?start=redeem${token}`);
         } else {
           // fallback se aperto da browser normale
-          window.location.href = `https://t.me/timereginamargheritachannel_bot?start=redeem${token}`;
+	  	  alert("Creo2 https://t.me/timereginamargheritachannel_bot?start=redeem${token}");
+          window.location.href = 'https://t.me/timereginamargheritachannel_bot?start=redeem'+ token;
         }
       });
     }
