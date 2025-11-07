@@ -308,7 +308,7 @@
 
 	//alert("Token " + token);
 
-    if (link && token) {
+    if (link && token && pd) {
       link.addEventListener('click', function(e) {
         e.preventDefault();
           // fallback se aperto da browser normale
@@ -369,16 +369,6 @@ function showFireworksMulti() {
 
 
     (function () {
-      const PRIZES = [
-        "Piega gratis!",
-        "Sconto 15% se porti un amico",
-        "Sconto 20% se porti due amici",
-        "Sconto 10%",
-        "Trattamento capelli in omaggio",
-        "Sconto 20% se porti tre amici",
-        "Taglio + piega a -15%",
-        "Prodotto in omaggio"
-      ];
 
       const COLORS = [
         '#d4a800', '#735354', '#00334e', '#b98f00',
@@ -386,7 +376,7 @@ function showFireworksMulti() {
       ];
 
       const WHEEL = document.getElementById('wheel');
-      const SEGMENTS = PRIZES.length;
+      const SEGMENTS = 8;
       const ANGLE = 360 / SEGMENTS;
 
       // Disegna la ruota (solo spicchi colorati, niente testo/icona)
@@ -433,6 +423,7 @@ function showFireworksMulti() {
       // --- Logica principale ---
       const URL_PARAMS = new URLSearchParams(window.location.search);
       const TOKEN = URL_PARAMS.get('token');
+      const PRIZE = URL_PARAMS.get('pd');
       const SPIN_BTN = document.getElementById('spinBtn');
       const WHEEL_PAGE = document.getElementById('wheelPage');
       const RESULT_PAGE = document.getElementById('resultPage');
@@ -440,7 +431,7 @@ function showFireworksMulti() {
       const FINAL_PRIZE = document.getElementById('finalPrize');
       const BACK_BTN = document.getElementById('backBtn');
 
-      if (!TOKEN) {
+      if (!TOKEN || !PRIZE) {
   		WHEEL_PAGE.style.display = 'none';
   		RESULT_PAGE.style.display = 'none';
   		ERROR_PAGE.style.display = 'block';
@@ -455,7 +446,7 @@ function showFireworksMulti() {
       async function myPrize() {
         return new Promise(resolve => {
           setTimeout(() => {
-            const randomPrize = PRIZES[Math.floor(Math.random() * PRIZES.length)];
+            const randomPrize = PRIZE;
             resolve({ prize: randomPrize });
           }, 1000); // simula latenza
         });
