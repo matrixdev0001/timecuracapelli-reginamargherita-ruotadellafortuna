@@ -367,6 +367,27 @@ function showFireworksMulti() {
   }
 }
 
+function decodeBase64UrlSafe(str) {
+  try {
+    // Controllo: solo caratteri validi Base64 URL-safe
+    if (!/^[A-Za-z0-9\-_]*$/.test(str)) {
+      throw new Error("Stringa non valida Base64 URL-safe");
+    }
+
+    // Ripristina caratteri standard Base64
+    let base64 = str.replace(/-/g, '+').replace(/_/g, '/');
+
+    // Aggiungi padding mancante
+    while (base64.length % 4 !== 0) base64 += '=';
+
+    // Decodifica
+    return Buffer.from(base64, 'base64').toString('utf-8');
+
+  } catch (err) {
+    console.error("Errore decodifica Base64:", err.message);
+    return null; // ritorna null se fallisce
+  }
+}
 
     (function () {
 
@@ -423,7 +444,7 @@ function showFireworksMulti() {
       // --- Logica principale ---
       const URL_PARAMS = new URLSearchParams(window.location.search);
       const TOKEN = URL_PARAMS.get('token');
-      const PRIZE = URL_PARAMS.get('pd');
+      const PRIZE_PARAM = URL_PARAMS.get('pd');
       const SPIN_BTN = document.getElementById('spinBtn');
       const WHEEL_PAGE = document.getElementById('wheelPage');
       const RESULT_PAGE = document.getElementById('resultPage');
@@ -431,6 +452,7 @@ function showFireworksMulti() {
       const FINAL_PRIZE = document.getElementById('finalPrize');
       const BACK_BTN = document.getElementById('backBtn');
 
+      const PRIZE = decodeBase64UrlSafe(PRIZE_PARAM); 
       if (!TOKEN || !PRIZE) {
   		WHEEL_PAGE.style.display = 'none';
   		RESULT_PAGE.style.display = 'none';
