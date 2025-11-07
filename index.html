@@ -368,24 +368,19 @@ function showFireworksMulti() {
 }
 
 function decodeBase64UrlSafe(str) {
+  // sostituisci i caratteri URL-safe
+  str = str.replace(/-/g, '+').replace(/_/g, '/');
+
+  // aggiungi padding se necessario
+  while (str.length % 4) {
+    str += '=';
+  }
+
   try {
-    // Controllo: solo caratteri validi Base64 URL-safe
-    if (!/^[A-Za-z0-9\-_]*$/.test(str)) {
-      throw new Error("Stringa non valida Base64 URL-safe");
-    }
-
-    // Ripristina caratteri standard Base64
-    let base64 = str.replace(/-/g, '+').replace(/_/g, '/');
-
-    // Aggiungi padding mancante
-    while (base64.length % 4 !== 0) base64 += '=';
-
-    // Decodifica
-    return Buffer.from(base64, 'base64').toString('utf-8');
-
-  } catch (err) {
-    console.error("Errore decodifica Base64:", err.message);
-    return null; // ritorna null se fallisce
+    return atob(str);
+  } catch (e) {
+    console.error("Errore decodifica Base64:", e);
+    return null;
   }
 }
 
