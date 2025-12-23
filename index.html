@@ -206,7 +206,7 @@
   </div>
 </div>
 
-    <button id="spinBtn" disabled>Gira la Ruota</button>
+    <button id="spinBtn" disabled style="display:none">Gira la Ruota</button>
     <p class="small-muted">© Time Cura Capelli – Roma, Viale Regina Margherita, 308</p>
   </div>
 
@@ -472,44 +472,36 @@ function decodeBase64UrlSafe(str) {
       // URL del tuo Cloudflare Worker (da sostituire)
       const WORKER_URL = 'https://ruota-timecuracapelli.your-subdomain.workers.dev';
 
-      SPIN_BTN.addEventListener('click', async () => {
-        SPIN_BTN.disabled = true;
+      async function startSpin() {
+  const extraRot = 360 * (8 + Math.random() * 4);
+  WHEEL.style.transform = `rotate(${-extraRot}deg)`;
 
-        // Rotazione velocissima: 8-12 giri
-        const extraRot = 360 * (8 + Math.random() * 4);
-        WHEEL.style.transform = `rotate(${-extraRot}deg)`;
+  // durata animazione ruota
+  await new Promise(resolve => setTimeout(resolve, 5000));
 
-        // Attendi la fine dell'animazione
-        await new Promise(resolve => setTimeout(resolve, 5000));
+  let result = await myPrize();
 
-        // Chiama il backend (o simula in locale)
-        let result;
-       result = await myPrize(); // fallback per sviluppo
+  if (result && result.prize) {
+    FINAL_PRIZE.textContent = result.prize;
+    WHEEL_PAGE.style.display = 'none';
+    RESULT_PAGE.style.display = 'block';
 
-        // Mostra solo il premio
-	if (result && result.prize) {
-  FINAL_PRIZE.textContent = result.prize;
-  WHEEL_PAGE.style.display = 'none';
-  RESULT_PAGE.style.display = 'block';
-setTimeout(() => {
-  tgRed();
-}, 100);
-setTimeout(() => {
-  showFireworksMulti();
-}, 300);
-setTimeout(() => {
-  showFireworksMulti();
-}, 1300);
-setTimeout(() => {
-  showFireworksMulti();
-}, 2300);
+    setTimeout(() => tgRed(), 100);
+    setTimeout(showFireworksMulti, 300);
+    setTimeout(showFireworksMulti, 1300);
+    setTimeout(showFireworksMulti, 2300);
+  } else {
+    alert("Errore: premio non disponibile.");
+  }
 }
 
 
-         else {
-          alert("Errore: premio non disponibile.");
-        }
-      });
+    SPIN_BTN.disabled = false;
+
+    document.fonts.ready.then(() => {
+        setTimeout(startSpin, 600);
+    });
+
 
     }})();
   </script>
