@@ -472,12 +472,27 @@ function decodeBase64UrlSafe(str) {
       // URL del tuo Cloudflare Worker (da sostituire)
       const WORKER_URL = 'https://ruota-timecuracapelli.your-subdomain.workers.dev';
 
-      async function startSpin() {
-  const extraRot = 360 * (8 + Math.random() * 4);
-  WHEEL.style.transform = `rotate(${-extraRot}deg)`;
 
-  // durata animazione ruota
-  await new Promise(resolve => setTimeout(resolve, 5000));
+async function startSpin() {
+  // reset iniziale
+  WHEEL.style.transition = "none";
+  WHEEL.style.transform = "rotate(0deg)";
+
+  // forza reflow
+  WHEEL.getBoundingClientRect();
+
+  // riattiva transizione
+  WHEEL.style.transition = "transform 6s cubic-bezier(0.16, 0.84, 0.4, 1)";
+
+  // rotazione vera
+  const extraRot = 360 * (8 + Math.random() * 4);
+
+  requestAnimationFrame(() => {
+    WHEEL.style.transform = `rotate(${-extraRot}deg)`;
+  });
+
+  // attendi fine animazione
+  await new Promise(resolve => setTimeout(resolve, 6000));
 
   let result = await myPrize();
 
@@ -494,7 +509,6 @@ function decodeBase64UrlSafe(str) {
     alert("Errore: premio non disponibile.");
   }
 }
-
 
     SPIN_BTN.disabled = false;
 
